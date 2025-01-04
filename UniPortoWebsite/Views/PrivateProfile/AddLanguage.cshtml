@@ -1,0 +1,38 @@
+﻿@model UniPortoWebsite.EF.Language
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@Html.Label("Add Langague")</h4>
+            </div>
+            @using (Ajax.BeginForm("AddLanguage", "PrivateProfile", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddLanguageCallback()" }))
+            {
+                <div class="modal-body">
+                    @Html.Label("Language")
+                    @Html.DropDownListFor(p => p.Title, ViewBag.Title as SelectList, "Select Language", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p=>p.Title, "", new { @class = "text-danger" })
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default">Add</button>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            }
+
+
+        </div>
+    </div>
+</div>
+<script>
+    function AddLanguageCallback() {
+        window.location.reload();
+    }
+</script>

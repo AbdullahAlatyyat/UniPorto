@@ -1,0 +1,126 @@
+﻿@*@model UniPortoWebsite.Models.AskForRecViewModel*@
+<div class="modal-dialog">
+    <div class="v-cell">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Ask Reccomendation for your activity !</h4>
+
+            </div>
+            @*@using (Ajax.BeginForm("AskForReccomendation", "PrivateProfile",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "succesAskRec",
+        OnBegin = "askRecBeg",
+        OnFailure = "notAdded"
+    },new {@id = "recForm" }))
+            { @Html.HiddenFor(p => p.CompanyId)
+                @Html.HiddenFor(p => p.ActivityId)
+                @Html.HiddenFor(p => p.InstructorId)
+                
+            }*@
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <h5>Please choose an existing instructor or company.</h5>
+                </div>
+                <div class="col-md-12" onclick="fillInsDDL()">
+                    <select id="instDDL" name="selectIns" class="col-md-12 selectpicker" data-style="btn-white" data-live-search="true" data-size="20">
+
+                        <option value="1" id="0">Choose Instructor</option>
+                        @*@if (Model.InstructorsDDL.Count > 0 || Model.InstructorsDDL != null)
+                    {
+                        foreach (var item in Model.InstructorsDDL)
+                        {
+                            <option id="@item.Id">@item.FullName</option>
+                        }
+                    }*@
+
+                    </select>
+                    <br />
+
+                </div>
+                <br />
+                <div class="col-md-12" onclick="fillCmpDDL()">
+                    <select id="compDLL" name="selectComp" class="col-md-12 selectpicker" data-style="btn-white" data-live-search="true" data-size="20">
+                        <option value="1" id="0">Choose Company</option>
+                        @*@if (Model.CompaniesDDL.Count > 0 || Model.CompaniesDDL != null)
+                    {
+                        foreach (var item in Model.CompaniesDDL)
+                        {
+                            <option id="@item.Id">@item.FullName</option>
+                        }
+                    }*@
+
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <h5>  Requester Message</h5>
+                    @*@Html.TextAreaFor(model => model.RequesterMessage, new { @class = "form-control share-text", @placeholder = "Add Messege !!", @style = "resize: none;" })*@
+
+                    <textarea class="form-control share-text" cols="20" data-val="true" id="RecomMessage" placeholder="Message ..." rows="2" style="resize: none;"></textarea>
+                    <br />
+                </div>
+            </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" onclick="saveAsk()">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    <script>
+      
+        var isCompDDLNotFilled = true;
+        var isInstDDLNotFilled = true;
+        function fillInsDDL() {
+            if (isInstDDLNotFilled) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetAllInstructorsProfiles", "PrivateProfile")',
+                    success: function (success) {
+                        $.each(success, function (i, item) {
+                            $('#instDDL').append('<option  id="' + item.Id + '">' + item.FullName + '</option>').selectpicker('refresh');
+                        });
+                        isInstDDLNotFilled = false;
+                    },
+                    error: function (error) {
+                        alert("Error occured while getting instructors.");
+
+                    }
+                });
+            }
+        }
+        function fillCmpDDL() {
+            if (isCompDDLNotFilled) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetAllCompaniesProfiles", "PrivateProfile")',
+                    success: function (success) {
+                        $.each(success, function (i, item) {
+                            $('#compDLL').append('<option id="' + item.Id + '">' + item.FullName + '</option>').selectpicker('refresh');
+                            isCompDDLNotFilled = false;
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error occured while getting companies.");
+                    }
+                });
+            }
+         
+            
+        }
+        function notAdded() {
+            alert("An Error Occured, please try again");
+        }
+        function askRecBeg() {
+            //show sppinner
+        }
+        function succesAskRec() {
+            alert("Susses");
+        }
+    </script>

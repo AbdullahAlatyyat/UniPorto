@@ -1,0 +1,470 @@
+﻿@model UniPortoWebsite.Models.PortoProfileViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="st-layout ls-top-navbar ls-bottom-footer hide-sidebar sidebar-r2" lang="en">
+<head>
+    <link rel="icon" href="https://uniporto.blob.core.windows.net/uniporto/2.png">
+    <meta charset="utf-8">
+    <title>@Model.UserProfile.FullName </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="~/Content/profilecustom.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <!-- Vendor CSS BUNDLE
+    Includes styling for all of the 3rd party libraries used with this module, such as Bootstrap, Font Awesome and others.
+    TIP: Using bundles will improve performance by reducing the number of network requests the client needs to make when loading the page. -->
+    <link href="~/Content/ProfileTheme/css/vendor/all.css" rel="stylesheet">
+    <link href="~/Content/ProfileTheme/css/app/app.css" rel="stylesheet">
+    <scipt src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></scipt>
+
+</head>
+<body>
+    <style>
+        .load-bar {
+            position: relative;
+            margin-top: 20px;
+            width: 100%;
+            height: 6px;
+            background-color: #fdba2c;
+        }
+
+        .bar {
+            content: "";
+            display: inline;
+            position: absolute;
+            width: 0;
+            height: 100%;
+            left: 50%;
+            text-align: center;
+        }
+
+            .bar:nth-child(1) {
+                background-color: #da4733;
+                animation: loading 3s linear infinite;
+            }
+
+            .bar:nth-child(2) {
+                background-color: #3b78e7;
+                animation: loading 3s linear 1s infinite;
+            }
+
+            .bar:nth-child(3) {
+                background-color: #fdba2c;
+                animation: loading 3s linear 2s infinite;
+            }
+
+        @@keyframes loading {
+            from {
+                left: 50%;
+                width: 0;
+                z-index: 100;
+            }
+
+            33.3333% {
+                left: 0;
+                width: 100%;
+                z-index: 10;
+            }
+
+            to {
+                left: 0;
+                width: 100%;
+            }
+        }
+        /*for making the date scrollable*/
+        .element {
+            position: fixed;
+            top: 50%;
+            right: 2%;
+        }
+
+        div.show-image {
+            position: relative;
+            float: left;
+            margin: 5px;
+        }
+
+        .spinner {
+            box-sizing: border-box;
+            height: 60px;
+            width: 60px;
+            margin: 80px;
+            border: 0px solid #16ae9f;
+            border-radius: 50%;
+            box-shadow: 0 -20px 0 24px #16ae9f inset;
+            animation: rotate 1s infinite linear;
+        }
+
+        @@keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        div.show-image:hover input {
+            display: block;
+        }
+
+        div.show-image a {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        div.show-image {
+            position: relative;
+            float: left;
+            margin: 5px;
+        }
+
+            div.show-image:hover img {
+                opacity: 0.5;
+            }
+
+            div.show-image:hover a {
+                display: block;
+            }
+
+        div.show-button a {
+            position: absolute;
+            display: none;
+        }
+
+        div.show-image a.update {
+            top: 0;
+            left: 0;
+        }
+
+        div.show-image input.delete {
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <!-- Wrapper required for sidebar transitions -->
+    <div class="st-container">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-main navbar-primary navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@Url.Action("Main", "Home")"><img src="~/Content/whiteLogoSmall.png" style="height:40px;width:110px;padding-top:10px" /></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="main-nav">
+
+                    <ul class="nav navbar-nav  navbar-right ">
+                        @{if (((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Company) || ((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Instructor))
+                            {
+                                @Html.Action("GetNotifications", "PrivateProfile");
+                            }}
+                        <!-- User -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle user" data-toggle="dropdown">
+                                @if (UniPortoContext.LoggedInUser.ProfileImage != null)
+                                {
+                                    <img src="@UniPortoContext.LoggedInUser.ProfileImage" alt="@UniPortoContext.LoggedInUser.FullName" class="img-circle" width="40" />  @UniPortoContext.LoggedInUser.FullName  <span class="caret"></span>
+                                }
+                                else
+                                {
+                                    <img src="~/Content/user-default.png" alt="@UniPortoContext.LoggedInUser.FullName" class="img-circle" width="40" />  @UniPortoContext.LoggedInUser.FullName  <span class="caret"></span>
+
+                                }
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href='@Url.Action("Index","PrivateProfile")'>My Profile</a></li>
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+        @using Microsoft.AspNet.Identity
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+
+            }
+        }
+
+
+
+        <!-- sidebar effects OUTSIDE of st-pusher: -->
+        <!-- st-effect-1, st-effect-2, st-effect-4, st-effect-5, st-effect-9, st-effect-10, st-effect-11, st-effect-12, st-effect-13 -->
+        <!-- content push wrapper -->
+        <div class="st-pusher" id="content">
+            <!-- sidebar effects INSIDE of st-pusher: -->
+            <!-- st-effect-3, st-effect-6, st-effect-7, st-effect-8, st-effect-14 -->
+            <!-- this is the wrapper for the content -->
+            <div class="st-content">
+                <!-- extra div for emulating position:fixed of the menu -->
+                <div class="st-content-inner">
+
+                    <div class="container">
+                        <div class="cover profile">
+                            <div class="wrapper">
+                                <div class="cover overlay cover-image-full height-300-lg">
+
+                                    @if (Model.UserProfile.ProfileCover != null)
+                                    {
+                                    <img id="coverPhoto" src="@Model.UserProfile.ProfileCover" style="height:100%" />
+
+                                    }
+                                    else
+                                    {
+                                    <img id="coverPhoto" src="~/Content/Cover.jpg" style="height:100%" />
+
+                                    }
+                                </div>
+                            </div>
+                            <div class="cover-info">
+                                <div class="avatar show-image">
+                                    @if (Model.UserProfile.ProfileImage != null)
+                                    {
+                                    <img src="@Model.UserProfile.ProfileImage" alt="@Model.UserProfile.FullName" />
+
+                                    }
+                                    else
+                                    {
+                                    <img src="~/Content/user-default.png" alt="@Model.UserProfile.FullName" />
+
+                                    }
+                                </div>
+                                <div class="name"><a href="#">@Model.UserProfile.FullName</a></div>
+                                <ul class="cover-nav">
+                                    <li id="homeTab"><a href="@Url.Action("PortoProfile","PrivateProfile",new { ProfileId = @Model.UserProfile.Id })"><i class="fa fa-fw icon-ship-wheel"></i> Timeline</a></li>
+                                    <li id="aboutTab"><a href="@Url.Action("PortoAbout","PrivateProfile",new {ProfileId = @Model.UserProfile.Id })"><i class="fa fa-fw icon-user-1"></i> About</a></li>
+                                    @*<li id="friendsTab"><a href="@Url.Action("FullTimeline","PrivateProfile")"><i class="fa fa-fw fa-angellist"></i> Full TimeLine</a></li>*@
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                        <div class="container" id="ParentContainer">
+                            <div class="row">
+                                <div id="" class="col-md-9">
+                                    <ul id="Blocks" class="timeline-list">
+
+                                        @if (Model.allActivities != null)
+                                        {
+                                            foreach (var item in Model.allActivities)
+                                            {
+
+                                        <li class="media media-clearfix-xs" id="@((item.CreatedOn).ToString("MMM"))">
+                                            <div class="media-left">
+                                                <div class="user-wrapper">
+                                                    @if (Model.UserProfile.ProfileImage != null)
+                                                            {
+                                                            <img src="@Model.UserProfile.ProfileImage" class="img-circle" width="80" />
+                                                            }
+                                                            else
+                                                            {
+                                                            <img src="~/Content/user-default.png" class="img-circle" width="80" />
+                                                            }
+                                                    <div><a href="#">@Model.UserProfile.FullName</a></div>
+                                                    <div class="date">@Html.Label("dateTxt", (item.CreatedOn).ToString("MMM d"))</div>
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="media-body-wrapper">
+                                                    <div class="timeline-block">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <div class="media">
+                                                                    <div class="media-body">
+
+
+                                                                        <b>
+                                                                            <a href="">@item.CreatedBy</a>
+                                                                            @if (item.DateOfActivity != null)
+                                                                                    {
+                                                                                        if (item.DateOfActivity != "")
+                                                                                        {
+                                                                                    <span>Happened On : @item.DateOfActivity</span>
+                                                                                        }
+                                                                                    }
+                                                                        </b>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                @item.Status
+                                                            </div>
+                                                            @if (item.AttachmentsTypeId == 2)
+                                                                    {
+                                                                    <img src="@item.AttachmentUrl" class="img-responsive">
+                                                                    }
+                                                            @if (item.AttachmentsTypeId == 3)
+                                                                    {
+                                                                    <div class="embed-responsive embed-responsive-4by3">
+                                                                        <video width="400" hight="400" controls><source src="@item.AttachmentUrl"></video>
+                                                                    </div>
+                                                                    }
+                                                            <div class="modal fade" id="AllRecommendations" role="dialog">
+
+                                                            </div>
+                                                            <div class="view-all-comments">
+                                                                <a onclick="LoadRecommendation('@item.Id')">
+                                                                    <i class="fa fa-comments-o"></i> View all Reccomendations
+                                                                </a>
+
+                                                                @*<span>comments</span>*@
+                                                            </div>
+                                                            <ul id="inputGroup_@item.Id" class="comments">
+                                                                @*<li clas="media">
+                                                                    <div class="media-left">
+                                                                        <a href="">
+                                                                            <img src="~/Content/ProfileTheme/images/people/50/woman-5.jpg" class="media-object">
+                                                                        </a>
+                                                                    </div>*@
+                                                                @*<div class="media-body">
+                                                                        <a href="" class="comment-author">Mary</a>
+                                                                        <span>Wow</span>
+                                                                        <div class="comment-date">2 days</div>
+                                                                    </div>*@
+                                                                @*</li>*@
+                                                                @{
+                                                                            if (((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Company) || ((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Instructor))
+                                                                            {
+                                                                        <li class="comment-form">
+                                                                            <div class="input-group">
+                                                                                <input type="text" id="Rec_@item.Id" class="form-control" />
+                                                                                <span class="input-group-btn">
+                                                                                    <a id="@item.Id" onclick="AddRecommendation(this)" title="Add Reccomendation" class="btn btn-default"><i class="fa fa-fw fa-plus"></i></a>
+                                                                                </span>
+                                                                            </div>
+                                                                        </li>
+                                                                            }
+
+                                                                }
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+
+
+
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                        <li> <h3 class="btn-danger" style="align-content:center">User have no activities yet !</h3></li>
+                                                                            }
+
+
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <ul class="nav timeline-months ">
+                                        <li class="active"><a href="#Jan"><i class="fa fa-calendar fa-fw"></i>Jan</a></li>
+                                        <li><a href="#Feb"><i class="fa fa-calendar fa-fw"></i>Feb</a></li>
+                                        <li><a href="#Mar"><i class="fa fa-calendar fa-fw"></i>Mar</a></li>
+                                        <li><a href="#Apr"><i class="fa fa-calendar fa-fw"></i>Apr</a></li>
+                                        <li><a href="#May"><i class="fa fa-calendar fa-fw"></i>May</a></li>
+                                        <li><a href="#Jun"><i class="fa fa-calendar fa-fw"></i>Jun</a></li>
+                                        <li><a href="#Jul"><i class="fa fa-calendar fa-fw"></i>Jul</a></li>
+                                        <li><a href="#Aug"><i class="fa fa-calendar fa-fw"></i>Aug</a></li>
+                                        <li><a href="#Sep"><i class="fa fa-calendar fa-fw"></i>Sep</a></li>
+                                        <li><a href="#Oct"><i class="fa fa-calendar fa-fw"></i>Oct</a></li>
+                                        <li><a href="#Nov"><i class="fa fa-calendar fa-fw"></i>Nov</a></li>
+                                        <li><a href="#Dec"><i class="fa fa-calendar fa-fw"></i>Dec</a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <strong>Uni-Porto</strong> v4.0.0 &copy; Copyright @DateTime.Now.Year
+    </footer>
+    <!-- // Footer -->
+    <!-- /st-container -->
+    <!-- Inline Script for colors and config objects; used by various external scripts; -->
+    <script src="~/Content/ProfileTheme/js/vendor/all.js"></script>
+    <script src="~/Content/ProfileTheme/js/app/main.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
+
+    <script>
+        function AddRecommendation(data) {
+            debugger;
+            var text = $("#Rec_" + data.id).val();
+            var loggedInName = " @UniPortoContext.LoggedInUser.FullName";
+            var profileImage = "@UniPortoContext.LoggedInUser.ProfileImage";
+            var dateNow = "@DateTime.Now.ToShortDateString()";
+            var timeNow = "@DateTime.Now.ToShortTimeString()";
+            if (profileImage == "") {
+                profileImage = "@Url.Content("~")"+"/Content/user-default.png";
+            }
+            if (text != "") {
+                $.ajax({
+                    type: "Post",
+                    url: '@Url.Action("AddRecommendation", "PrivateProfile")',
+                    data: { activityId: data.id, Title: text },
+                    success: function (success) {
+                        $("#inputGroup_" + data.id).append('<li clas="media"><div class="media-left"><img src="' + profileImage + '" style="width:50px;height:50px" class="media-object"></div><div class="media-body"><a href="" class="comment-author">' + loggedInName + '</a><span>' + text + '</span><div class="comment-date">' + dateNow + ' - ' + timeNow + '</div></div></li>');
+                        $("#Rec_" + data.id).val("");
+
+                    },
+                    error: function (error) {
+                        alert("Please try again ...");
+                    }
+                });
+            }
+            else {
+                alert("Can't post recommendation with empty space");
+            }
+
+        }
+        function LoadRecommendation(id) {
+            debugger;
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("LoadAllRecommendation", "PrivateProfile")',
+                data: { activityId: id },
+                success: function (success) {
+                    $("#AllRecommendations").html(success);
+                    $("#AllRecommendations").modal('toggle');
+                },
+                error: function (error) {
+                    alert("Error");
+
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GraduationProject.UniPortoWebsite.BL.ProfileManger">
+    <Position X="21.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAEIAAAAAQAAAEAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>BL\ProfileManger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Controllers.AccountController">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <NestedTypes>
+      <Class Name="UniPortoWebsite.Controllers.AccountController.ChallengeResult" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Controllers\AccountController.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAABBChACAAAAAAAAFgEwAADAABMKIAAAMRAAQggAA=</HashCode>
+      <FileName>Controllers\AccountController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Controllers.HomeController">
+    <Position X="24.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACQAAAAEACAAAAAAAAAAAAAAAAAEABAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Controllers.PrivateProfileController">
+    <Position X="3.75" Y="10.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAQgCKAIEEAACIDAAAAIAACAIAAEEAAwAEoIA=</HashCode>
+      <FileName>Controllers\PrivateProfileController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graduation.UniPortoWebsite.Controllers.AdminstrationController">
+    <Position X="26.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAABBACAAQIAAQAEAABgAAAACAEAAgAiACEAAAAAAAA=</HashCode>
+      <FileName>Controllers\AdminstrationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.Activity">
+    <Position X="3.25" Y="0.5" Width="2" />
+    <Members>
+      <Property Name="PeopleInActivities" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAIACAAAAAAAAAASAAABABAAAQIAhQE=</HashCode>
+      <FileName>EF\Activity.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Profile" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Recommendations" />
+      <Property Name="ActivityAttachments" />
+      <Property Name="RecommendationQueue" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.ActivityAttachment">
+    <Position X="3.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACAAAAAUAAAAAAAAAAAAAAAAAACAAAAEAAAAA=</HashCode>
+      <FileName>EF\ActivityAttachment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.AttachmentsType">
+    <Position X="9" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>EF\AttachmentsType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.AvalibleLanguage">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EF\AvalibleLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.CompanyAd">
+    <Position X="19.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQAAAAAAgAEAAAAABAAAAAAACABAAAAgAAAAAAAE=</HashCode>
+      <FileName>EF\CompanyAd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.Experiance">
+    <Position X="19.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCQAAAACAgAAAgAAAAAAAAAAAAAAAAABAAAAAAAAg=</HashCode>
+      <FileName>EF\Experiance.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Profile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.Language">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAABAAAAAAgAA=</HashCode>
+      <FileName>EF\Language.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Profile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.Profile">
+    <Position X="12" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ECECACAAOKAAZIKKAAACCAEQAAASgAACACAiAIAABRE=</HashCode>
+      <FileName>EF\Profile.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AspNetUser" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.ProfileStatu">
+    <Position X="14.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EF\ProfileStatu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.ProfileStudyInfo">
+    <Position X="22.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAACAAAAAAAAAAAAQBAgAAAAgAg=</HashCode>
+      <FileName>EF\ProfileStudyInfo.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Profile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.ProfileType">
+    <Position X="10" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgkAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EF\ProfileType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.Project">
+    <Position X="17" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCAAQAQAAAAAAACAAAAAAAAAAAAAAAABBAAAAAAAA=</HashCode>
+      <FileName>EF\Project.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Profile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.Recommendation">
+    <Position X="6" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACCABAAAAAAEAAAAAAAAAAAAACAAAAABAAAEAAgAE=</HashCode>
+      <FileName>EF\Recommendation.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Profile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.RecommendationQueue">
+    <Position X="6" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAkAAAAAAAAAAACAAAAAAABAAIEAAgAE=</HashCode>
+      <FileName>EF\RecommendationQueue.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Activity" />
+      <Property Name="Profile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.UniversityStudent">
+    <Position X="0.5" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAIAgAAAAAAEQAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>EF\UniversityStudent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.ActivityManager">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAAAACCAAEAAQAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Manager\ActivityManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.AttachmentManger">
+    <Position X="16.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Manager\AttachmentManger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.CompanyManager">
+    <Position X="21.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAgAACAAAAAIAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Manager\CompanyManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.ExperianceManager">
+    <Position X="14.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAQIAAAAAAAAAAAAAAAAABAgAAAAI=</HashCode>
+      <FileName>Manager\ExperianceManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.LanguageManager">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAAAAAAAAAAAEAQAAAAAAAAAARAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Manager\LanguageManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.ProfileManager">
+    <Position X="19.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAABBAAEIAAQAAYAAAEAAAAQQAAgAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Manager\ProfileManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.ProfileStudyInfoManager">
+    <Position X="10" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAQAAAAAgABAAAAAAAAgAAgAAAAAA=</HashCode>
+      <FileName>Manager\ProfileStudyInfoManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.ProjectManager" Collapsed="true">
+    <Position X="14.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAQAAAAgAAAAAAAAAAAAAIIAAAAAA=</HashCode>
+      <FileName>Manager\ProjectManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.RecommendationManager">
+    <Position X="3" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAEAAAAAAAAQAAAAAAAAAAAAAAIQAAAAAAEAAA=</HashCode>
+      <FileName>Manager\RecommendationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.RecommendationQueueManager">
+    <Position X="7.75" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAACAAABAAAAAAAAAEAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Manager\RecommendationQueueManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Manager.UniversityStudentsManager">
+    <Position X="19" Y="13.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Manager\UniversityStudentsManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Models.AskForRecViewModel">
+    <Position X="10.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAEAAAAAAgAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AskForRecViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Models.RecomenderProfile">
+    <Position X="21.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AskForRecViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Models.Request">
+    <Position X="14.75" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAQAAAABAAQAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\NotificationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Models.DashboredViewModel.AdminDashboredViewModel">
+    <Position X="7.25" Y="10.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAgAAAAAAAAQAAAAAAAAAAAACAAAAAAAAAABgAg=</HashCode>
+      <FileName>Models\DashboredViewModel\AdminDashboredViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.ActivityRepository">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAAAACAAAEAAQAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Repository\ActivityRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.AttachmentRepository">
+    <Position X="24" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repository\AttachmentRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.CompanyRepository">
+    <Position X="24.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAIAICAAAAAAAAAAEAAIAAA=</HashCode>
+      <FileName>Repository\CompanyRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.ExperianceRepository">
+    <Position X="14.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAIAAAAAAAAAAAAAAAAABAgAIAAI=</HashCode>
+      <FileName>Repository\ExperianceRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.LanguageRepository">
+    <Position X="12.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAIAAAAAAAEAAAAAAAAAAAAAAAAAAYAAAAAIABA=</HashCode>
+      <FileName>Repository\LanguageRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.ProfileRepository">
+    <Position X="15.5" Y="11.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAABBAAEIAAQAAYAAAEAAAAQQAAgAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Repository\ProfileRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.ProfileStudyInfoRepository">
+    <Position X="16.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAgABAAAAAAAAgAAgAAIAAA=</HashCode>
+      <FileName>Repository\ProfileStudyInfoRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.ProjectRepository">
+    <Position X="17" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAgAAAAAAAAAAAAAIIAAAAAA=</HashCode>
+      <FileName>Repository\ProjectRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.RecommendationQueueRepository">
+    <Position X="7.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAABAAAAAAAAAEAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Repository\RecommendationQueueRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.RecommendationRespository">
+    <Position X="0.5" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAIQAAAAAAEAAA=</HashCode>
+      <FileName>Repository\RecommendationRespository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.Repository.UniversityStudentsRepository">
+    <Position X="19" Y="12" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Repository\UniversityStudentsRepository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UniPortoWebsite.EF.AspNetUser">
+    <Position X="9.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCAAAAACAAokAAAAAAQAABAAAAQAAIAQQAABAAAQE=</HashCode>
+      <FileName>EF\AspNetUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Profiles" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

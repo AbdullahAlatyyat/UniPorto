@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UniPortoMobileApp.Views.Page1">
+  <Grid Name="GV1">
+
+
+    <FlipView Name="fv1" CanDrag="False" >
+      <FlipViewItem Name="fvI1" Tapped="fvI1_Tapped"  CanDrag="False">
+        <FlipViewItem.Background>
+          <ImageBrush x:Name="img" Stretch="UniformToFill"  ImageSource="/Assets/MainPage/1.jpg" AlignmentY="Top" AlignmentX="Center"/>
+
+        </FlipViewItem.Background>
+
+      </FlipViewItem>
+    </FlipView>
+    <StackPanel Height="75" Width="1000" Background="#fccf3a" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+      <Button  x:Name="scanapp" Click="scan_Click"  Width="75" Height="75" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="19" IsDoubleTapEnabled="False" IsHoldingEnabled="False" IsRightTapEnabled="False" BorderThickness="0" ClickMode="Press" >
+        <Button.Content>
+          <TextBlock FontFamily="Regular" FontSize="19" FontWeight="Bold">scan</TextBlock>
+        </Button.Content>
+        <Button.Background>
+          <ImageBrush ImageSource="ms-appx:///Assets/MainPage/scanBtn.png"/>
+        </Button.Background>
+      </Button>
+
+
+    </StackPanel>
+
+  </Grid>
+</ContentPage>

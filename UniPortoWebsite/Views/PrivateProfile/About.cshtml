@@ -1,0 +1,336 @@
+﻿@model UniPortoWebsite.EF.Profile
+@{
+    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/_PrivateProfileLayout.cshtml";
+}
+<!-- Wrapper required for sidebar transitions -->
+
+<div class="container">
+
+    @Html.Action("EditProfile", "PrivateProfile")
+    @Html.Action("AddLanguage", "PrivateProfile")
+    @Html.Action("CreateExperiance", "PrivateProfile")
+    @Html.Action("CreateStudyInfo", "PrivateProfile")
+
+
+    <div class="modal fade" id="EditExperianceModal" role="dialog">
+
+    </div>
+    <div class="modal fade" id="EditStudyInfoModal" role="dialog">
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading panel-heading-gray">
+                    <a href="#" class="btn btn-white btn-xs pull-right" data-toggle="modal" data-target="#EditProfileModal"><i class="fa fa-pencil"></i></a>
+                    <i class="fa fa-fw fa-info-circle"></i> About
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled profile-about margin-none">
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">Date of Birth</span></div>
+                                @if (Model.DateOfBirthday != null)
+                                {
+                                    <div class="col-sm-8">@Model.DateOfBirthday.Value.ToString("MM-dd-yyyy")</div>
+
+                                }
+                                else
+                                {
+                                    <div class="col-sm-8">@Model.DateOfBirthday</div>
+
+                                }
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+
+
+                                <div class="col-sm-4"><span class="text-muted">Major</span></div>
+
+
+                                <div class="col-sm-8">@Model.Major</div>
+
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">Gender</span></div>
+                                <div class="col-sm-8">@Model.Gender</div>
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">Email</span></div>
+                                <div class="col-sm-8">@Model.Email</div>
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">Phone Number</span></div>
+                                <div class="col-sm-8">@Model.PhoneNo</div>
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">Skills</span></div>
+                                <div class="col-sm-8">@Model.Skills</div>
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">intersts</span></div>
+                                <div class="col-sm-8">@Model.intersts</div>
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">Hobbies</span></div>
+                                <div class="col-sm-8">@Model.Hobbies</div>
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">City</span></div>
+                                <div class="col-sm-8">@Model.City</div>
+                            </div>
+                        </li>
+                        <li class="padding-v-5">
+                            <div class="row">
+                                <div class="col-sm-4"><span class="text-muted">Address</span></div>
+                                <div class="col-sm-8">@Model.Address</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading panel-heading-gray">
+                    <a href="#" class="btn btn-white btn-xs pull-right" data-toggle="modal" data-target="#CreateExperianceModal"><i class="fa fa-plus"></i></a>
+
+                    <i class="fa fa-briefcase"></i> Experiance
+
+
+                </div>
+                <div class="panel-body">
+
+                    @if (Model.Experiances.Count > 0)
+                    {
+
+
+                        foreach (var item in Model.Experiances)
+                        {
+                            <div class="panel panel-success">
+                                <div class="panel-heading ">
+                                    <span class="text-muted">@Html.LabelFor(p => item.Position)</span>
+                                    <span class="text-muted">@Html.DisplayTextFor(p => item.Position)</span>
+                                    <a class="btn btn-white btn-xs pull-right" onclick="loadModel(@item.Id)"><i class="fa fa-pencil"></i></a>
+
+                                </div>
+                                <div class="panel-body">
+                                    <ul class="list-unstyled profile-about margin-none">
+                                        <li class="padding-v-5">
+                                            <div class="row">
+
+                                            </div>
+                                        </li>
+                                        <li class="padding-v-5">
+                                            <div class="row">
+                                                <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.CompanyName)</span></div>
+                                                <div class="col-sm-8">@Html.DisplayTextFor(p => item.CompanyName)</div>
+                                            </div>
+                                        </li>
+                                        <li class="padding-v-5">
+                                            <div class="row">
+                                                <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.Start)</span></div>
+                                                <div class="col-sm-8">@Html.DisplayTextFor(p => item.Start)</div>
+                                            </div>
+                                        </li>
+                                        <li class="padding-v-5">
+                                            <div class="row">
+                                                <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.Finish)</span></div>
+                                                <div class="col-sm-8">@Html.DisplayTextFor(p => item.Finish)</div>
+                                            </div>
+                                        </li>
+                                        <li class="padding-v-5">
+                                            <div class="row">
+                                                <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.Description)</span></div>
+                                                <div class="col-sm-8">@Html.DisplayTextFor(p => item.Description)</div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    else
+                    {
+                        <ul class="list-unstyled profile-about margin-none">
+
+                            <li class="padding-v-5">
+                                <div class="row">
+                                    <div class="col-sm-12"><span class="text-muted">Ops .... ! No experiance available</span></div>
+
+                                </div>
+                            </li>
+
+                        </ul>
+                    }
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6 col-lg-6 item">
+            @if (Model.ProfileStudyInfoes.Count > 0)
+            {
+                <div class="timeline-block">
+                    <div class="panel panel-default profile-card clearfix-xs">
+                        <div class="panel-body">
+                            <div class="profile-card-icon">
+                                <i class="fa fa-graduation-cap"></i>
+                            </div>
+                            <a class="btn btn-white btn-xs pull-right" data-toggle="modal" data-target="#CreateStudyInfoModal"><i class="fa fa-plus"></i></a>
+                            @foreach (var item in Model.ProfileStudyInfoes)
+                            {
+                               
+
+                                <a class="btn btn-white btn-xs pull-right" onclick="loadEditStudyModel(@item.Id)"><i class="fa fa-pencil"></i></a>
+
+                                    <h4 class="text-center">@item.Major</h4>
+                                    <ul class="icon-list icon-list-block">
+                                        <li><i class="fa fa-map-marker"></i> @item.School</li>
+                                        <li><i class="fa fa-trophy"></i> @item.StudyLevel</li>
+                                        <li><i class="fa fa-calendar"></i> @item.Start.ToShortDateString()- @item.Finish.ToShortDateString()</li>
+                                        <li><i class="fa fa-info-circle"></i> @item.Detalis</li>
+
+                                    </ul>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="timeline-block">
+                    <div class="panel panel-default profile-card clearfix-xs">
+                        <div class="panel-body">
+                            <div class="profile-card-icon">
+                                <i class="fa  fa-exclamation-circle"></i>
+                            </div>
+                            <h4 class="text-center">There is no study info</h4>
+                           <button style="width:100%" class="btn btn-default" data-toggle="modal" data-target="#CreateStudyInfoModal"><i class="fa fa-plus"></i>Add New</button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="panel panel-default">
+                <div class="panel-heading panel-heading-gray">
+
+                    <a class="btn btn-white btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i></a>
+                    <i class="fa fa-language"></i> Languages
+                </div>
+                <div class="panel-body">
+                    @if (Model.Languages.Count > 0)
+                    {
+
+
+                        foreach (var item in Model.Languages)
+                        {
+                            <ul class="list-unstyled profile-about margin-none">
+                                <li class="padding-v-5">
+                                    <div class="row">
+                                        <div class="col-sm-10">@item.Title</div>
+                                        <div class="col-sm-2"><a onclick="RemoveLangauge(this)" id="@item.Id" class="btn btn-danger btn-xs pull-right"><i class="fa fa-remove"></i></a></div>
+
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                        }
+                    }
+                    else
+                    {
+                        <ul class="list-unstyled profile-about margin-none">
+
+                            <li class="padding-v-5">
+                                <div class="row">
+                                    <div class="col-sm-12"><span class="text-muted">Ops .... ! No languages</span></div>
+
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    }
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+<script>
+    function RemoveLangauge(data) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("RemoveLanguage", "PrivateProfile")',
+            data: { LanguageId: data.id },
+            success: function (success) {
+                if (success == true) {
+                    $(data).closest('.row').remove();
+                }
+            },
+            error: function (error) {
+                alert("Error");
+
+            }
+        });
+    }
+    function loadModel(id) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("EditExperiance", "PrivateProfile")',
+            data: { ExperianceId: id },
+            success: function (success) {
+                $("#EditExperianceModal").html(success);
+                $("#EditExperianceModal").modal('toggle');
+            },
+            error: function (error) {
+                alert("Error");
+
+            }
+        });
+    }
+    function loadEditStudyModel(id) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("EditStudyInfo", "PrivateProfile")',
+            data: { StudyId: id },
+            success: function (success) {
+                $("#EditStudyInfoModal").html(success);
+                $("#EditStudyInfoModal").modal('toggle');
+            },
+            error: function (error) {
+                alert("Error");
+
+            }
+        });
+    }
+</script>

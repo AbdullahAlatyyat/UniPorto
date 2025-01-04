@@ -1,0 +1,198 @@
+﻿@model UniPortoWebsite.Models.ActivityViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_PrivateProfileLayout.cshtml";
+}
+
+
+
+<div class="timeline row" data-toggle="isotope">
+    <div class="row">
+        @using (Ajax.BeginForm("AddActivity",
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnComplete = "AddDeviceCallback()",
+                    OnBegin = "showSpinner()",
+                    InsertionMode = InsertionMode.InsertBefore,
+                    UpdateTargetId = "Blocks",
+                }))
+        {
+            @Html.HiddenFor(p => p.AttachmentUrl)
+            @Html.HiddenFor(p => p.AttachmentsTypeId)
+            <div class="col-xs-12 col-md-6 col-lg-12 item pull-left">
+                <div class="timeline-block">
+                    <div class="panel panel-default share clearfix-xs">
+                        <div class="panel-heading panel-heading-gray title">
+                            What&acute;s new
+                        </div>
+                        <div class="panel-body">
+                            @Html.TextAreaFor(a => a.Status, new { @class = "form-control share-text", @placeholder = "Share your status...", rows = "4" })
+                        </div>
+                        <input type="file" accept="image/*" name="attach" id="attach-input" multiple="" style="display:none" />
+                        <input type="file" accept="image/*" name="attach" id="attach-input2" multiple="" style="display:none" />
+                        <div class="timeline-added-images" id="addedImages">
+                        </div>
+                        <div class="panel-footer share-buttons">
+                            <a id="attach-button"><i class="fa fa-photo"></i></a>
+                            <a id="attach-button2"><i class="fa fa-video-camera"></i></a>
+                            <button type="submit" class="btn btn-primary btn-xs pull-right " href="#" onclick="changeId()">Post</button>
+                        </div>
+                    </div>
+                    <div class="row" id="Blocks">
+
+
+                    </div>
+
+                </div>
+            </div> }
+
+        @*<div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading panel-heading-gray">
+                        <a href="#" class="btn btn-white btn-xs pull-right"><i class="fa fa-pencil"></i></a>
+                        <i class="fa fa-fw fa-info-circle"></i> About
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-unstyled profile-about margin-none">
+                            <li class="padding-v-5">
+                                <div class="row">
+                                    <div class="col-sm-4"><span class="text-muted">Date of Birth</span></div>
+                                    <div class="col-sm-8">12 January 1990</div>
+                                </div>
+                            </li>
+                            <li class="padding-v-5">
+                                <div class="row">
+                                    <div class="col-sm-4"><span class="text-muted">Job</span></div>
+                                    <div class="col-sm-8">Specialist</div>
+                                </div>
+                            </li>
+                            <li class="padding-v-5">
+                                <div class="row">
+                                    <div class="col-sm-4"><span class="text-muted">Gender</span></div>
+                                    <div class="col-sm-8">Male</div>
+                                </div>
+                            </li>
+                            <li class="padding-v-5">
+                                <div class="row">
+                                    <div class="col-sm-4"><span class="text-muted">Lives in</span></div>
+                                    <div class="col-sm-8">Miami, FL, USA</div>
+                                </div>
+                            </li>
+                            <li class="padding-v-5">
+                                <div class="row">
+                                    <div class="col-sm-4"><span class="text-muted">Credits</span></div>
+                                    <div class="col-sm-8">249</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+    @*<div id="Block1" class="row col-md-6">
+        </div>
+        <div id="Blocks" class="row col-md-6"></div>*@
+    @if (Model.allActivities != null)
+    {
+        <div id="Blocks" class="row">@Html.Partial("_Blocks", Model.allActivities)</div>
+    }
+
+</div>
+<script>
+    var button = $('#attach-button');
+    var input = $('#attach-input');
+    var button2 = $('#attach-button2');
+    var input2 = $('#attach-input2');
+    // when the button is clicked..
+    button.on('click', function (e) {
+
+        // it launches the file picker
+        input.click();
+    });
+    button2.on('click', function (e) {
+
+        // it launches the file picker
+        input2.click();
+    });
+    input2.on('change', function (e) {
+
+        // turn it into a form
+        var data = BuildFormData(e.target.files);
+
+        // post the form to the action method
+        @*PostData('@Url.Action("Attach", "PrivateProfile")', data);*@
+        $('#file').val(data);
+    });
+    // when the file picker changes..
+    input.on('change', function (e) {
+
+        // turn it into a form
+        var data = BuildFormData(e.target.files);
+
+        // post the form to the action method
+        PostData('@Url.Action("Attach", "PrivateProfile")', data);
+    });
+    // posts the files to a given url
+    function PostData(url, data) {
+
+        $.ajax({
+            // method
+            type: 'POST',
+
+            // endpoint
+            url: url,
+
+            // next 2 lines required for using FormData with jQuery
+            contentType: false,
+            processData: false,
+
+            // FormData instance
+            data: data,
+
+            // success handler
+            success: function (result) {
+                //window.location = window.location.href;
+
+                $('#addedImages').append('  <img src="' + result + '" width="80" alt="photo" />');
+                $('#addedImages').append('  <video width="100" hight="100" controls><source src="'+result+'" type="video/mp4">');
+
+
+                console.log(result);
+            }
+        });
+    }
+    function changeId() {
+        //$('#Block1').attr('id', 'Blocks2');
+        //$('#Blocks').attr('id', 'Block1');
+        //$('#Blocks2').attr('id', 'Blocks');
+
+    }
+    function hii() {
+    }
+    function AddDeviceCallback() {
+
+    }
+    function showSpinner() {
+
+    }
+    function BuildFormData(files) {
+
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+
+            data.append(files[i].name, files[i]);
+        }
+
+        return data;
+    }
+
+    //$.getJSON("demo_ajax_json.js", function (result) {
+    //    alert("hii");
+    //      ////  $.each(result, function (i, field) {
+    //        ////    $("div").append(field + " ");
+    //        });
+    //  ///});s
+
+</script>

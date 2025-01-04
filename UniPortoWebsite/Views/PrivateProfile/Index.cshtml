@@ -1,0 +1,407 @@
+﻿@model UniPortoWebsite.Models.ActivityViewModel
+
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_PrivateProfileLayout.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<div class="container">
+    <div class="modal fade slide-down" id="RequestReccomendationModal" aria-hidden="true" style="display: none;">
+        @Html.Partial("_AskForReccomendation");
+        @Html.HiddenFor(p => p.ActivityId)
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <div hidden="hidden" id="progressBar2" class="load-bar">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <ul id="" class="timeline-list">
+                @using (Ajax.BeginForm("AddActivityT", "PrivateProfile",
+new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "AddActivitySuccess",
+    OnBegin = "addActivityBegin",
+    OnFailure = "AddActivityFailure",
+    InsertionMode = InsertionMode.InsertBefore,
+    UpdateTargetId = "Blocks",
+}, new { @id = "AddActivityForm" }))
+                {
+                    @Html.HiddenFor(p => p.AttachmentUrl)
+                    @Html.HiddenFor(p => p.AttachmentsTypeId)
+                    <li class="media media-clearfix-xs">
+                        <div class="media-left">
+                            <div class="user-wrapper">
+                                <img src="https://www.materialui.co/materialIcons/content/add_circle_grey_192x192.png" alt="people" class="img-circle" width="80" />
+                                <div><a>Add Activity</a></div>
+                            </div>
+                        </div>
+                        <div class="media-body">
+                            <div class="media-body-wrapper">
+                                <div class="row">
+                                    <div class="col-md-10 col-lg-12">
+                                        <div class="panel panel-default share clearfix-xs">
+                                            <div class="panel-heading panel-heading-gray title">
+                                                What&acute;s new activity
+                                            </div>
+                                            <div class="panel-body">
+                                                @Html.TextAreaFor(model => model.Status, new { @class = "form-control share-text", @placeholder = "Share your activity...", @style = "resize: none;" })
+                                                <div class="timeline-added-images" id="addedImages">
+                                                    <div class="show-image">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel-footer share-buttons">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <a id="attach-button"><i class="fa fa-photo"></i></a>
+                                                        <a id="attach-button2"><i class="fa fa-video-camera"></i></a>
+                                                        <a><i class="fa fa-calendar active"></i></a>
+                                                    </div>
+
+                                                    <div class="col-md-6">@Html.TextBoxFor(p => p.DateOfActivity, new { @type = "text", id = "datepicker", @class = "form-control datepicker" })</div>
+                                                    <div id="btnSubmitDiv" class="col-md-3"><button class="btn btn-primary btn-xs pull-right" disabled="disabled" id="btnPost" onclick="validateActivity()">Post</button></div>
+                                                </div>
+                                                <input type="file" accept="image/*" name="attach" id="attach-input" multiple="" style="display:none" />
+                                                <input type="file" accept="video/*" name="attach" id="attach-input2" multiple="" style="display:none" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+
+                }
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+<div class="container" id="ParentContainer">
+
+    <div class="row">
+
+        <div id="" class="col-md-9">
+            <div hidden="hidden" id="progressBar" class="load-bar">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <ul id="Blocks" class="timeline-list">
+
+                @if (Model.allActivities != null)
+                {
+                    @Html.Partial("_TimeLineBlocks", Model.allActivities)
+                }
+                else
+                {
+                    <li>
+                        <div class="alert alert-success">
+                            You have no activities yet !
+                        </div>
+
+                    </li>
+                }
+
+
+            </ul>
+        </div>
+
+        <div class="col-md-3">
+            <ul class="nav timeline-months ">
+                <li class="active"><a href="#Jan"><i class="fa fa-calendar fa-fw"></i>Jan</a></li>
+                <li><a href="#Feb"><i class="fa fa-calendar fa-fw"></i>Feb</a></li>
+                <li><a href="#Mar"><i class="fa fa-calendar fa-fw"></i>Mar</a></li>
+                <li><a href="#Apr"><i class="fa fa-calendar fa-fw"></i>Apr</a></li>
+                <li><a href="#May"><i class="fa fa-calendar fa-fw"></i>May</a></li>
+                <li><a href="#Jun"><i class="fa fa-calendar fa-fw"></i>Jun</a></li>
+                <li><a href="#Jul"><i class="fa fa-calendar fa-fw"></i>Jul</a></li>
+                <li><a href="#Aug"><i class="fa fa-calendar fa-fw"></i>Aug</a></li>
+                <li><a href="#Sep"><i class="fa fa-calendar fa-fw"></i>Sep</a></li>
+                <li><a href="#Oct"><i class="fa fa-calendar fa-fw"></i>Oct</a></li>
+                <li><a href="#Nov"><i class="fa fa-calendar fa-fw"></i>Nov</a></li>
+                <li><a href="#Dec"><i class="fa fa-calendar fa-fw"></i>Dec</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function saveAsk() {
+        var cmpId = $('#compDLL').find(":selected").attr("id");
+        var instId = $('#instDDL').find(":selected").attr("id");
+        if (cmpId == 0 && instId == 0) {
+            alert("Please Select Instructor or company to recommend you !");
+            ShowNotification("Please Select Instructor or company to recommend you !", 'succes', 'bottomRight');
+            debugger;
+        }
+        else if ($('#RecomMessage').val().trim() == '') {
+            alert("Please add details to your request !");
+        }
+        else {
+            var recomRequest = {
+                ActivityId: $('#ActivityId').val(),
+                CompanyId: cmpId,
+                InstructorId: instId,
+                RequesterMessage: $('#RecomMessage').val()
+            };
+            var data = JSON.stringify(recomRequest);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AskForReccomendation", "PrivateProfile")',
+                dataType: "html",
+                data: { jsonRequest: data },
+                success: function (view) {
+                    if (view) {
+                        $("#RequestReccomendationModal").modal('toggle');
+                        $('select[name=selectComp]').val(1);
+                        $('select[name=selectIns]').val(1);
+                        $('.selectpicker').selectpicker('refresh');
+                        $('#RecomMessage').val("");
+                    }
+                    else {
+                        alert("An Error Occured , please try again");
+                    }
+
+                },
+                error: function (error) {
+                    alert("An Error Occured , please try again");
+                }
+            });
+
+        }
+    }
+    $('#testFill').change(function () {
+        alert("Hii");
+        for (var i = 6; i < 10; i++) {
+            $('#testFill').append('<option id="' + i + '">Mahmoud</option>').selectpicker('refresh');;
+        }
+    })
+    function editActivity() {
+
+    }
+    $('#Status').on('input', function (e) {
+
+        if ($('#Status').val().trim() == '') {
+            $('#btnPost').attr("disabled", true);
+        }
+        $('#btnPost').attr('disabled', false);
+    });
+    $('#btnSubmitDiv').click(function () {
+        if ($('#btnPost').is(':disabled')) {
+            alert('Please Add Description to your Activity');
+        }
+        else if ($('#Status').val().trim() == '') {
+            alert('Please Add Description to your Activity');
+            $('#btnPost').attr("disabled", true);
+        }
+    })
+    function addActivityBegin() {
+        $('#progressBar').attr('hidden', false);
+    }
+    function AddActivityFailure() {
+        $('#progressBar').attr('hidden', true);
+        $('#Status').val('');
+        $('#Status').attr("placeholder", "Share your activity...");
+        $('#datepicker').val('Choose Date of Your Event');
+        //  $('#Status').val("Share your activity...");
+        clearAttachment();
+        ClearLoader();
+        alert("Failed to add activity , please try again !");
+    }
+    function AddActivitySuccess() {
+        $('#progressBar').attr('hidden', true);
+        $('#Status').val('');
+        $('#Status').attr("placeholder", "Share your activity...");
+        $('#datepicker').val('Choose Date of Your Event');
+        //  $('#Status').val("Share your activity...");
+        ClearLoader();
+    }
+
+
+    var button = $('#attach-button');
+    var input = $('#attach-input');
+    var button2 = $('#attach-button2');
+    var input2 = $('#attach-input2');
+    // when the button is clicked..
+    button.on('click', function (e) {
+        // it launches the file picker
+        input.click();
+    });
+    button2.on('click', function (e) {
+        // it launches the file picker
+        input2.click();
+    });
+    input2.on('change', function (e) {
+        // turn it into a form
+        if (e.target.files.length > 0) {
+            var data = BuildFormData(e.target.files);
+            // post the form to the action method
+            PostData('@Url.Action("Attach", "PrivateProfile")', data, "Vid");
+        }
+        else {
+            alert("No File Choosen");
+
+        }
+    });
+    // when the file picker changes..
+    input.on('change', function (e) {
+        if (e.target.files.length > 0) {
+            // turn it into a form
+            var data = BuildFormData(e.target.files);
+            // post the form to the action method
+            PostData('@Url.Action("Attach", "PrivateProfile")', data, "Img");
+        }
+        else {
+            alert("No File Choosen");
+        }
+    });
+    // posts the files to a given url
+    function PostData(url, data, type) {
+        $('#addedImages').append('<div class="spinner"></div>');
+        debugger;
+        if (data != null) {
+            if (type == "Img") {
+                $('#attach-button2').attr("disabled", "disabled"); input2.attr("disabled", "disabled");
+                $('#attach-button').attr("disabled", "disabled"); input.attr("disabled", "disabled");
+                $.ajax({
+                    // method
+                    type: 'POST',
+                    // endpoint
+                    url: url,
+                    // next 2 lines required for using FormData with jQuery
+                    contentType: false,
+                    processData: false,
+                    // FormData instance
+                    data: data,
+                    // success handler
+                    //                    $('#addedImages').append('<div class="thumb thumb-rounded thumb-slide"><img src="' + result + '" width="150" alt="photo" /> <div class="caption">   <span>   <a id="attach-button" class="btn bg-success-400 btn-icon btn-xs" data-popup="lightbox"><i class="icon-plus2"></i></a></span></div></div>');
+                    success: function (result) {
+                        if (result != "") {
+                            $("#addedImages").empty();
+                            $('#addedImages').append('<div class="show-image"><img src="' + result + '" width="150" alt="photo" /><a class="update" id="removeAttachment"  value="Remove"  onClick="clearAttachment()" ><i class="fa fa-remove" style="font-size:2em; color:red;" ></i></a> </div>');
+                            console.log(result);
+                            $('#AttachmentUrl').val(result);
+                            $('#AttachmentsTypeId').val(2);
+                        }
+                        else {
+                            $("#addedImages").empty();
+                            alert("File Not Uploded ");
+                            ClearLoader();
+                        }
+                    }
+                });
+            }
+            if (type == "Vid") {
+                $.ajax({
+                    // method
+                    type: 'POST',
+                    // endpoint
+                    url: url,
+                    // next 2 lines required for using FormData with jQuery
+                    contentType: false,
+                    processData: false,
+                    // FormData instance
+                    data: data,
+                    // success handler
+                    success: function (result) {
+                        if (result != "") {
+                            $("#addedImages").empty();
+                            $('#attach-button').attr("disabled", "disabled"); input.attr("disabled", "disabled");
+                            $('#attach-button2').attr("disabled", "disabled"); input2.attr("disabled", "disabled");
+                            $('#addedImages').append('<video width="200" hight="200" controls><source src="' + result + '" type="video/mp4"></video><a class="update" id="removeAttachment"  value="Remove"  onClick="clearAttachment()" ><i class="fa fa-remove" style="font-size:2em; color:red;" ></i></a>');
+                            console.log(result);
+                            $('#AttachmentUrl').val(result);
+                            $('#AttachmentsTypeId').val(3);
+                        }
+                        else {
+                            $("#addedImages").empty();
+                            alert("File Not Uploded ");
+                            ClearLoader();
+                        }
+                    }
+                });
+            }
+        }
+    }
+    function validateActivity() {
+    }
+
+    function ClearLoader() {
+        $('#attach-button').attr("disabled", false); input.attr("disabled", false);
+        $('#attach-button2').attr("disabled", false); input2.attr("disabled", false);
+        $("#addedImages").empty();
+        $('#AttachmentUrl').val("");
+        $('#AttachmentsTypeId').val(1);
+    }
+
+    function BuildFormData(files) {
+
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+
+            data.append(files[i].name, files[i]);
+        }
+
+        return data;
+    }
+
+    function clearAttachment() {
+        var attaturl = $('#AttachmentUrl').val();
+        if ($('#AttachmentUrl').val != "") {
+            $.ajax({
+                type: "Post",
+                data: { attUrl: attaturl },
+                url: '@Url.Action("RemoveAttachment", "PrivateProfile")',
+                dataType: "json",
+                success: function (success) {
+                    $('#attach-button').attr("disabled", false); input.attr("disabled", false);
+                    $('#attach-button2').attr("disabled", false); input2.attr("disabled", false);
+                    $("#addedImages").empty();
+                    $('#AttachmentUrl').val("");
+                    $('#AttachmentsTypeId').val(1);
+                }
+            });
+        }
+    }
+    function loadtModalTest(id) {
+        $("#RequestReccomendationModal").modal('toggle');
+    }
+
+    function loadAskReccomModal(id) {
+        $('#ActivityId').val(id);
+        $("#RequestReccomendationModal").modal('toggle');
+        @*$.ajax({
+            type: "GET",
+            url: '@Url.Action("AskForReccomendation", "PrivateProfile")',
+            data: { ActivityId: id },
+            success: function (success) {
+                debugger;
+                $("#RequestReccomendationModal").html(success);
+                $("#RequestReccomendationModal").modal('toggle');
+            },
+            error: function (error) {
+                alert("Error");
+
+            }
+        });*@
+    }
+</script>
+<script>
+
+    $(function () {
+        $("#datepicker").datepicker();
+    });
+</script>

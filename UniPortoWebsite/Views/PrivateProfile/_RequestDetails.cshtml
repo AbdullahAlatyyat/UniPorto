@@ -1,0 +1,131 @@
+﻿@model UniPortoWebsite.Models.RecommendationQueueViewModel
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title" id="myModalLabel">Message From @Model.ProfileFullName</h4>
+        </div>
+        <div class="modal-body">
+            <center>
+
+                    <img src="@Model.ProfileImage" name="@Model.ProfileImage" width="140" height="140" border="0" class="img-circle">
+
+                <h3 class="media-heading">
+                    @Model.ProfileFullName
+
+                        <small>@Model.ProfileCity</small>
+                    
+                </h3>
+            </center>
+            <hr>
+                <p class="text-left">
+                    <strong>Message : </strong><br>
+                    @Model.Message
+                </p>
+                <br>
+            <hr />
+            <center>
+
+
+                <div class="panel panel-success">
+
+                    <div class="panel-heading" style="color:black"><p class="text-left"> Activity Detalis : </p> </div>
+
+
+                    <div class="panel-body">
+                        @*@if (Model.Activity.Date != null)
+                        {
+                           <h4> Date Of Activity:</h4> @Model.Activity.Date.Value.ToShortDateString()
+                            
+
+                        }*@
+                        @Model.ActivityContent
+                        <br />
+                        @if (Model.AttachmentsTypeId == (int)AttachmentsTypes.Image)
+                        {
+                            <img src="@Model.AttachmentUrl" style="width:150px;height:150px" />
+                        }
+                        @if(Model.AttachmentsTypeId==(int)AttachmentsTypes.Video)
+                        {
+                            <div class="embed-responsive embed-responsive-4by3">
+                                    <video width="400" hight="400" controls><source src="@Model.AttachmentUrl"></video>
+                                </div>
+                        }
+
+                    </div>
+                </div>
+                <br>
+            </center>
+
+            <center>
+
+
+                <div class="panel panel-defualt">
+
+                    <div class="panel-body">
+                     
+                        <input type="text" id="txtRecomendation" class="form-control" placeholder="Write Recommendation ...." />
+                    </div>
+                </div>
+                <br>
+            </center>
+
+        </div>
+        <div class="modal-footer">
+            <center>
+                <button type="button" onclick="AddRecommendation('@Model.ActivityId','@Model.Id')" class="btn btn-success" >Add Recommendation</button>
+                <button type="button" onclick="RejectRecommendation('@Model.Id')" class="btn btn-danger" >Reject Recommendation</button>
+                <button type="button" class="btn btn-defualt" data-dismiss="modal">Close</button>
+            </center>
+              
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function AddRecommendation(id,queueId)
+    {
+        var text = $("#txtRecomendation").val();
+        if (text != "")
+        {
+            $.ajax({
+                type: "Post",
+                url: '@Url.Action("AddRecommendation", "PrivateProfile")',
+                data: { activityId: id, Title: text },
+                success: function (success) {
+                    $("#AllRecommendations").modal('hide');
+                    location.reload();
+
+                },
+                error: function (error) {
+                    alert("Please try again ...");
+                }
+            });
+
+            RejectRecommendation(queueId);
+        }
+        else
+        {
+            alert("Can't add empty recommendation");
+        }
+    }
+    function RejectRecommendation(id) {
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("RejectRecommendationQueue", "PrivateProfile")',
+            data: { queueId:id },
+            success: function (success) {
+                $("#AllRecommendations").modal('hide');
+                location.reload();
+
+            },
+            error: function (error) {
+                alert("Please try again ...");
+            }
+        });
+
+    }
+    //
+</script>

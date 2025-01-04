@@ -1,0 +1,41 @@
+﻿@model UniPortoWebsite.Models.ActivityViewModel
+
+
+@using (Ajax.BeginForm("CreateActivityPartial", "PrivateProfile", new AjaxOptions { HttpMethod = "POST" }))
+{
+    <li class="media media-clearfix-xs">
+        <div class="media-left">
+            <div class="user-wrapper">
+                <img src="https://www.materialui.co/materialIcons/content/add_circle_grey_192x192.png" alt="people" class="img-circle" width="80" />
+                <div><a>Add Activity</a></div>
+            </div>
+        </div>
+        <div class="media-body">
+            <div class="media-body-wrapper">
+                <div class="row">
+                    <div class="col-md-10 col-lg-12">
+                        <div class="panel panel-default share clearfix-xs">
+                            <div class="panel-heading panel-heading-gray title">
+                                What&acute;s new activity
+                            </div>
+                            <div class="panel-body">
+                                @Html.HiddenFor(model=>model.AttachmentsTypeId)
+                                @*<textarea name="status" class="form-control share-text" rows="3" placeholder="Share your activity..."></textarea>*@
+                                @Html.TextAreaFor(model => model.Status, new { @class = "form-control share-text", @placeholder = "Share your activity..." , @style = "resize: none;" })
+                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="panel-footer share-buttons">
+                                <a href="#"><i class="fa fa-map-marker"></i></a>
+                                <a href="#"><i class="fa fa-photo"></i></a>
+                                <a href="#"><i class="fa fa-video-camera"></i></a>
+                                <button type="submit" class="btn btn-primary btn-xs pull-right " >Post</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </li>
+
+}

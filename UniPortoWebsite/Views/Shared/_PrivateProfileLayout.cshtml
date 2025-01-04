@@ -1,0 +1,360 @@
+﻿@using UniPortoWebsite.Helpers
+@using UniPortoWebsite.EF.Enums
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html class="st-layout ls-top-navbar ls-bottom-footer hide-sidebar sidebar-r2" lang="en">
+<head>
+    <link rel="icon" href="https://uniporto.blob.core.windows.net/uniporto/2.png">
+        <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="~/Content/profilecustom.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <!-- Vendor CSS BUNDLE
+      Includes styling for all of the 3rd party libraries used with this module, such as Bootstrap, Font Awesome and others.
+      TIP: Using bundles will improve performance by reducing the number of network requests the client needs to make when loading the page. -->
+    <link href="~/Content/ProfileTheme/css/vendor/all.css" rel="stylesheet">
+    <link href="~/Content/ProfileTheme/css/app/app.css" rel="stylesheet">
+</head>
+<body>
+    <style>
+        .load-bar {
+            position: relative;
+            margin-top: 20px;
+            width: 100%;
+            height: 6px;
+            background-color: #fdba2c;
+        }
+
+        .bar {
+            content: "";
+            display: inline;
+            position: absolute;
+            width: 0;
+            height: 100%;
+            left: 50%;
+            text-align: center;
+        }
+
+            .bar:nth-child(1) {
+                background-color: #da4733;
+                animation: loading 3s linear infinite;
+            }
+
+            .bar:nth-child(2) {
+                background-color: #3b78e7;
+                animation: loading 3s linear 1s infinite;
+            }
+
+            .bar:nth-child(3) {
+                background-color: #fdba2c;
+                animation: loading 3s linear 2s infinite;
+            }
+
+        @@keyframes loading {
+            from {
+                left: 50%;
+                width: 0;
+                z-index: 100;
+            }
+
+            33.3333% {
+                left: 0;
+                width: 100%;
+                z-index: 10;
+            }
+
+            to {
+                left: 0;
+                width: 100%;
+            }
+        }
+        /*for making the date scrollable*/
+        .element {
+            position: fixed;
+            top: 50%;
+            right: 2%;
+        }
+
+        div.show-image {
+            position: relative;
+            float: left;
+            margin: 5px;
+        }
+
+        .spinner {
+            box-sizing: border-box;
+            height: 60px;
+            width: 60px;
+            margin: 80px;
+            border: 0px solid #16ae9f;
+            border-radius: 50%;
+            box-shadow: 0 -20px 0 24px #16ae9f inset;
+            animation: rotate 1s infinite linear;
+        }
+
+        @@keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        div.show-image:hover input {
+            display: block;
+        }
+
+        div.show-image a {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+
+        div.show-image {
+            position: relative;
+            float: left;
+            margin: 5px;
+        }
+
+            div.show-image:hover img {
+                opacity: 0.5;
+            }
+
+            div.show-image:hover a {
+                display: block;
+            }
+
+        div.show-button a {
+            position: absolute;
+            display: none;
+        }
+
+        div.show-image a.update {
+            top: 0;
+            left: 0;
+        }
+
+        div.show-image input.delete {
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <!-- Wrapper required for sidebar transitions -->
+    <div class="st-container">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-main navbar-primary navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@Url.Action("Main", "Home")"><img src="~/Content/whiteLogoSmall.png" style="height:40px;width:110px;padding-top:10px" /></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="main-nav">
+
+                    <ul class="nav navbar-nav  navbar-right ">
+                        @{if (((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Company) || ((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Instructor))
+                            {
+                                @Html.Action("GetNotifications", "PrivateProfile");
+                            }}
+                        <!-- User -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle user" data-toggle="dropdown">
+                                @if (UniPortoContext.LoggedInUser.ProfileImage != null)
+                                {
+                                    <img src="@UniPortoContext.LoggedInUser.ProfileImage" alt="@UniPortoContext.LoggedInUser.FullName" class="img-circle" width="40" />  @UniPortoContext.LoggedInUser.FullName  <span class="caret"></span>
+                                }
+                                else
+                                {
+                                    <img src="~/Content/user-default.png" alt="@UniPortoContext.LoggedInUser.FullName" class="img-circle" width="40" />  @UniPortoContext.LoggedInUser.FullName  <span class="caret"></span>
+
+                                }
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href='@Url.Action("Index","PrivateProfile")'>My Profile</a></li>
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+        @using Microsoft.AspNet.Identity
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+
+            }
+        }
+
+        <div class="modal fade" id="viewRequestDetailsModal" role="dialog">
+
+        </div>
+
+
+        <!-- sidebar effects OUTSIDE of st-pusher: -->
+        <!-- st-effect-1, st-effect-2, st-effect-4, st-effect-5, st-effect-9, st-effect-10, st-effect-11, st-effect-12, st-effect-13 -->
+        <!-- content push wrapper -->
+        <div class="st-pusher" id="content">
+            <!-- sidebar effects INSIDE of st-pusher: -->
+            <!-- st-effect-3, st-effect-6, st-effect-7, st-effect-8, st-effect-14 -->
+            <!-- this is the wrapper for the content -->
+            <div class="st-content">
+                <!-- extra div for emulating position:fixed of the menu -->
+                <div class="st-content-inner">
+
+                    <div class="container">
+                        <div class="cover profile">
+                            <div class="wrapper">
+                                @*<div class="image">
+                                        <img src="~/Content/ProfileTheme/images/profile-cover.jpg" alt="people" />
+
+                                          <b style="top:auto">sdfadsfaff</b>  sdfdsfg
+                                    </div>*@
+                                <div class="cover overlay cover-image-full height-300-lg">
+
+                                    @if (UniPortoContext.LoggedInUser.ProfileCover != null)
+                                    {
+                                        <img id="coverPhoto" src="@UniPortoContext.LoggedInUser.ProfileCover" style="height:100%" />
+
+                                    }
+                                    else
+                                    {
+                                        <img id="coverPhoto" src="~/Content/Cover.jpg" style="height:100%" />
+
+                                    }
+                                    <div class="overlay overlay-full">
+                                        <div class="v-top">
+                                            <input type="file" accept="image/*" name="attach" id="coverAttachment" multiple="" style="display:none" />
+                                            <a href="#" id="uplodeCover" class="btn btn-cover"><i class="fa fa-pencil"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cover-info">
+                                <div class="avatar show-image">
+                                    @if (UniPortoContext.LoggedInUser.ProfileImage != null)
+                                    {
+                                        <img src="@UniPortoContext.LoggedInUser.ProfileImage" alt="people" />
+
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/user-default.png" alt="people" />
+
+                                    }
+                                    <a class="update btn btn-danger" id="uplodeImageBtn" value="Remove" style="width:auto !important"><i class="fa fa-fw fa-wrench" style="font-size:1em;  align-items:center"></i></a>
+                                    <input type="file" accept="image/*" name="attach" id="profilePhotoAttachment" multiple="" style="display:none" />
+                                </div>
+                                <div class="name"><a href="#">@UniPortoContext.LoggedInUser.FullName</a></div>
+                                <ul class="cover-nav">
+                                    <li id="homeTab"><a href="@Url.Action("Index","PrivateProfile")"><i class="fa fa-fw icon-ship-wheel"></i> Timeline</a></li>
+                                    <li id="aboutTab"><a href="@Url.Action("About","PrivateProfile")"><i class="fa fa-fw icon-user-1"></i> About</a></li>
+                                    @*<li id="friendsTab"><a href="@Url.Action("FullTimeline","PrivateProfile")"><i class="fa fa-fw fa-angellist"></i> Full TimeLine</a></li>*@
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- Footer -->
+        <footer class="footer">
+            <strong>Uni-Porto</strong> v4.0.0 &copy; Copyright @DateTime.Now.Year
+        </footer>
+        <!-- // Footer -->
+        <!-- /st-container -->
+        <!-- Inline Script for colors and config objects; used by various external scripts; -->
+        <script src="~/Content/ProfileTheme/js/vendor/all.js"></script>
+        <script src="~/Content/ProfileTheme/js/app/main.js"></script>
+        <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+        <script>
+            $('#uplodeCover').on('click', function (e) {
+                // it launches the file picker
+                $('#coverAttachment').click();
+            });
+            $('#uplodeImageBtn').on('click', function (e) {
+                // it launches the file picker
+                $('#profilePhotoAttachment').click();
+            });
+            $('#profilePhotoAttachment').on('change', function (e) {
+                // turn it into a form
+                if (e.target.files.length > 0) {
+                    var data = BuildFormData(e.target.files);
+                    // post the form to the action method
+                    PostDataFromLayout('@Url.Action("UpdateProfilePhoto", "PrivateProfile")', data);
+                }
+                else {
+                    alert("No File Choosen");
+                }
+            });
+            $('#coverAttachment').on('change', function (e) {
+                // turn it into a form
+                if (e.target.files.length > 0) {
+                    var data = BuildFormData(e.target.files);
+                    // post the form to the action method
+                    PostDataFromLayout('@Url.Action("UpdateCoverPhoto", "PrivateProfile")', data);
+                }
+                else {
+                    alert("No File Choosen");
+                }
+            });
+            function PostDataFromLayout(url, data) {
+                if (data != null) {
+                    $.ajax({
+                        // method
+                        type: 'POST',
+                        // endpoint
+                        url: url,
+                        // next 2 lines required for using FormData with jQuery
+                        contentType: false,
+                        processData: false,
+                        // FormData instance
+                        data: data,
+                        // success handler
+                        //                    $('#addedImages').append('<div class="thumb thumb-rounded thumb-slide"><img src="' + result + '" width="150" alt="photo" /> <div class="caption">   <span>   <a id="attach-button" class="btn bg-success-400 btn-icon btn-xs" data-popup="lightbox"><i class="icon-plus2"></i></a></span></div></div>');
+                        success: function (result) {
+                            if (result != "") {
+                                $("#coverPhoto").attr("src", result);
+                                $('#progressBar2').attr('hidden', false);
+                                window.location.reload();
+
+                            }
+                            else {
+                                alert("File Not Uploded ");
+                            }
+                        },
+                        error: function (error) {
+                            alert("Error");
+                        }
+                    });
+                }
+            }
+        </script>
+</body>
+</html>

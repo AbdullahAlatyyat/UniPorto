@@ -1,0 +1,96 @@
+﻿@using UniPortoWebsite.Helpers
+@model UniPortoWebsite.Models.ActivityViewModel
+<li class="media media-clearfix-xs" id="@((Model.CreatedOn).ToString("MMM"))">
+    <div class="media-left">
+        <div class="user-wrapper">
+            @if (UniPortoContext.LoggedInUser.ProfileImage != null)
+            {
+                <img src="@UniPortoContext.LoggedInUser.ProfileImage" class="img-circle" width="80" />
+            }
+            else
+            {
+                <img src="~/Content/user-default.png" class="img-circle" width="80" />
+            }
+            <div><a href="#">@UniPortoContext.LoggedInUser.FullName</a></div>
+            <div class="date">@Html.Label("dateTxt", (Model.CreatedOn).ToString("MMM d"))</div>
+        </div>
+    </div>
+    <div class="media-body">
+        <div class="media-body-wrapper">
+            <div class="timeline-block">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="media">
+                            <div class="media-body">
+                                <a href="#" class="pull-right text-muted" onclick="editActivity()" title="Edit Activity">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                @{
+                                    if (((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Alumni) || ((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Student))
+                                    {
+                                        <a href="#" title="Ask For Reccomendation" onclick="loadAskReccomModal(@Model.Id)" data-toggle="tk-modal-demo" data-modal-options="slide-down" class="pull-right text-muted" data-target="#RequestReccomendationModal"><i class="icon-reply-all-fill fa fa-2x ">&nbsp;&nbsp;</i></a>
+                                    }
+
+                                }
+                                <b>
+                                    <a href="">@Model.CreatedBy</a>
+                                    @if (Model.DateOfActivity != null)
+                                    {
+                                        if (Model.DateOfActivity != "")
+                                        {
+                                            <span>Happened On : @Model.DateOfActivity</span>
+                                        }
+                                    }
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        @Model.Status
+                    </div>
+                    @if (Model.AttachmentsTypeId == 2)
+                    {
+                        <img src="@Model.AttachmentUrl" class="img-responsive">
+                    }
+                    @if (Model.AttachmentsTypeId == 3)
+                    {
+                        <div class="embed-responsive embed-responsive-4by3">
+                            <video width="476" height="476"><source src="@Model.AttachmentUrl"></video>
+                        </div>
+                    }
+                    <div class="view-all-comments">
+                        <a href="#">
+                            <i class="fa fa-comments-o"></i> View all Reccomendations
+                        </a>
+                        @*<span>comments</span>*@
+                    </div>
+                    <ul class="comments">
+                        @*<li clas="media">
+                                <div class="media-left">
+                                    <a href="">
+                                        <img src="~/Content/ProfileTheme/images/people/50/woman-5.jpg" class="media-object">
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <a href="" class="comment-author">Mary</a>
+                                    <span>Wow</span>
+                                    <div class="comment-date">2 days</div>
+                                </div>
+                            </li>*@
+                        <li class="comment-form">
+                            <div class="input-group">
+                                <input type="text" class="form-control" />
+                                <span class="input-group-btn">
+                                    <a href="" class="btn btn-default"><i class="fa fa-fw fa-plus"></i></a>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+
+
+

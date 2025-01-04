@@ -1,0 +1,43 @@
+﻿@model UniPortoWebsite.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Instructor Register";
+    Layout = "~/Views/Shared/Login_RegisterLayout.cshtml";
+}
+
+<div class="lock-container">
+    <h1>Instructor Registration</h1>
+    <div class="panel panel-default text-center">
+
+        <div class="panel-body">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="row btn-danger" id="customError">
+
+                </div>
+                <div class="row">
+                    @Html.TextBoxFor(p => p.profile.FullName, new { @class = "form-control", @placeholder = "Full Name" })
+                    @Html.ValidationMessageFor(m => m.profile.FullName, "", new { @class = "text-danger" })
+                </div>
+                <div class="row">
+                    @Html.TextBoxFor(p => p.Email, new { @class = "form-control", @placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="row">
+                    @Html.PasswordFor(p => p.Password, new { @class = "form-control", @placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                </div>
+                    <div class="row">
+                        @Html.PasswordFor(p => p.ConfirmPassword, new { @class = "form-control", @placeholder = "Password Confirmation" })
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                    <button class="btn btn-success" type="submit">Register</button>
+            }
+        </div>
+
+    </div>
+</div>
+

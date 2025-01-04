@@ -1,0 +1,52 @@
+﻿@model UniPortoWebsite.Models.NotificationViewModel
+<li class="dropdown notifications updates">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-bell-o"></i>
+        <span class="badge badge-primary">@Model.NotificationCount</span>
+    </a>
+    <ul style="overflow-y: scroll; height:400px;" class="dropdown-menu" role="notification">
+        <li class="dropdown-header">Reccomendation Requests:</li>
+       @{
+           foreach (var item in Model.ReccomendRequests)
+           {
+            <li class="media" >
+                <div class="media-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img class="width-30 img-circle" src="@item.RequesterImage" alt="@item.RequesterName">
+                            <a href="@Url.Action("PortoProfile","PrivateProfile",new { ProfileId = item.RequesterId })">@item.RequesterName</a> requested a reccommendation from you.
+                            <span class="text-caption text-muted">@item.RequestCreatedOn</span>
+                        </div>
+                        <div class="col-md-12">
+                            <span onclick="viewRequestDetails(@item.RequestId)" href="#" class="label label-success">View Details</span>
+                          </div>
+                    </div>
+                </div>
+            </li>
+           }
+
+    }
+    
+       
+    </ul>
+</li>
+<script>
+    function viewRequestDetails(id) {
+        
+        // $("#viewRequestDetailsModal").modal('toggle');
+        debugger;
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("ViewRequestDetails", "PrivateProfile")',
+            data: { RequestId: id },
+            success: function (success) {
+                $("#viewRequestDetailsModal").html(success);
+                $("#viewRequestDetailsModal").modal('toggle');
+            },
+            error: function (error) {
+                alert("Error");
+
+            }
+        });
+    }
+</script>

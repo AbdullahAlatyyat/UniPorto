@@ -1,0 +1,172 @@
+﻿@model UniPortoWebsite.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/Login_RegisterLayout.cshtml";
+
+}
+<div id="content">
+    <div class="container-fluid">
+        <div class="lock-container ">
+            <h1>Registration</h1>
+            <div class="panel panel-default text-center ">
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <img src="~/Content/logo.png" width="180" style="padding-bottom:10px"/>
+                        <div class="form-horizontal">
+                            <input id="txtUsername" class="form-control" placeholder="Enter Your University ID" style="width:280px;max-width:240px;display:inline-block" />
+                            <button class="btn btn-default" id="StdSearch" type="button" onclick="CheckStudent()" style="margin-left:-2px;margin-top:-2px;min-height:36px;"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="row btn-danger" id="customError">
+
+                    </div>
+                    @using (Html.BeginForm())
+            {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "alert-danger" })
+                        <div class="row" style="padding-bottom:10px">
+
+
+                            @Html.LabelFor(m => m.profile.ProfileTypeID)
+                            @Html.DropDownListFor(m => m.profile.ProfileTypeID, Model.profile.ProfileTypes, new { @class = "form-control" })
+
+
+                        </div>
+                        <div class="row">
+                            @Html.TextBoxFor(p => p.profile.FullName, new { @class = "form-control", @placeholder = "Full Name", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(m => m.profile.FullName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row">
+                            @Html.TextBoxFor(p => p.Email, new { @class = "form-control", @placeholder = "Email", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row">
+                            @Html.PasswordFor(p => p.Password, new { @class = "form-control", disabled = "disabled", @placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row">
+                            @Html.PasswordFor(p => p.ConfirmPassword, new { @class = "form-control", disabled = "disabled", @placeholder = "Password Confirmation" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="row">
+                                <button class="btn btn-success" id="create" style="width:100%;" type="submit">Register</button>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+
+            </div>
+        </div>
+</div>
+    </div>
+
+        <script>
+    $(document).ready(function () {
+        var selected = $("#profile_ProfileTypeID").val();
+        if (selected == '1') {
+            $('#txtUsername').show();
+            $('#StdSearch').show();
+            $("#Password").prop("disabled", true);
+            $("#ConfirmPassword").prop("disabled", true);
+            $("#profile_FullName").attr("readonly", true);
+            $("#Email").attr("readonly", true);
+            $("#txtUsername").val("");
+            $("#Password").val("");
+            $("#ConfirmPassword").val("");
+            $("#profile_FullName").val("");
+            $("#Email").val("");
+            $("#txtUsername").removeClass("btn-success");
+
+
+        }
+        else
+        {
+            $('#txtUsername').hide();
+            $('#StdSearch').hide();
+            $("#Password").prop("disabled", false);
+            $("#ConfirmPassword").prop("disabled", false);
+            $("#profile_FullName").attr("readonly", false);
+            $("#Email").attr("readonly", false);
+            $("#txtUsername").val("");
+            $("#Password").val("");
+            $("#ConfirmPassword").val("");
+            $("#profile_FullName").val("");
+            $("#Email").val("");
+            $("#txtUsername").removeClass("btn-success");
+        }
+    });
+    $('#profile_ProfileTypeID').change(function () {
+        var selected = $(this).val();
+        if (selected == '1') {
+            $('#txtUsername').show();
+            $('#StdSearch').show();
+            $("#Password").prop("disabled", true);
+            $("#ConfirmPassword").prop("disabled", true);
+            $("#profile_FullName").attr("readonly", true);
+            $("#Email").attr("readonly", true);
+            $("#txtUsername").val("");
+            $("#Password").val("");
+            $("#ConfirmPassword").val("");
+            $("#profile_FullName").val("");
+            $("#Email").val("");
+            $("#txtUsername").removeClass("btn-success");
+
+
+        }
+        else {
+            $('#txtUsername').hide();
+            $('#StdSearch').hide();
+            $("#Password").prop("disabled", false);
+            $("#ConfirmPassword").prop("disabled", false);
+            $("#profile_FullName").attr("readonly", false);
+            $("#Email").attr("readonly", false);
+            $("#txtUsername").val("");
+            $("#Password").val("");
+            $("#ConfirmPassword").val("");
+            $("#profile_FullName").val("");
+            $("#Email").val("");
+            $("#txtUsername").removeClass("btn-success");
+
+        }
+    });
+    function CheckStudent() {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("CheckStudentUsername", "Account")',
+            data: { username: $("#txtUsername").val() },
+            success: function (success) {
+
+                $("#customError").html("");
+                $("#txtUsername").removeClass("btn-danger");
+                $("#txtUsername").addClass("btn-success");
+                $("#profile_FullName").val(success.FullName);
+                $("#Email").val(success.email);
+                $("#Password").prop("disabled", false);
+                $("#ConfirmPassword").prop("disabled", false);
+                $("#RegisterModal").modal('show');
+            },
+            error: function (error) {
+                $("#profile_FullName").val("");
+                $("#Email").val("");
+                $("#Password").prop("disabled", true);
+                $("#ConfirmPassword").prop("disabled", true);
+                $("#txtUsername").removeClass("btn-success");
+                $("#txtUsername").addClass("btn-danger");
+                $("#customError").html("");
+                $("#customError").append("Can't Find Or Already Registered");
+            }
+        });
+
+    }
+        </script>
+
+

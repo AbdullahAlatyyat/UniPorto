@@ -1,0 +1,412 @@
+﻿@model UniPortoWebsite.Models.PortoAboutViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html class="st-layout ls-top-navbar ls-bottom-footer hide-sidebar sidebar-r2" lang="en">
+<head>
+    <link rel="icon" href="https://uniporto.blob.core.windows.net/uniporto/2.png">
+    <meta charset="utf-8">
+    <title>@Model.UserProfile.FullName Profile</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Vendor CSS BUNDLE
+    Includes styling for all of the 3rd party libraries used with this module, such as Bootstrap, Font Awesome and others.
+    TIP: Using bundles will improve performance by reducing the number of network requests the client needs to make when loading the page. -->
+    <link href="~/Content/ProfileTheme/css/vendor/all.css" rel="stylesheet">
+    <link href="~/Content/ProfileTheme/css/app/app.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Wrapper required for sidebar transitions -->
+    <div class="st-container">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-main navbar-primary navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@Url.Action("Main", "Home")"><img src="~/Content/whiteLogoSmall.png" style="height:40px;width:110px;padding-top:10px" /></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="main-nav">
+
+                    <ul class="nav navbar-nav  navbar-right ">
+                        @{if (((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Company) || ((ProfileTypes)UniPortoContext.LoggedInUser.ProfileTypeID).Equals(ProfileTypes.Instructor))
+                            {
+                                @Html.Action("GetNotifications", "PrivateProfile");
+                            }}
+                        <!-- User -->
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle user" data-toggle="dropdown">
+                                @if (UniPortoContext.LoggedInUser.ProfileImage != null)
+                                {
+                                    <img src="@UniPortoContext.LoggedInUser.ProfileImage" alt="@UniPortoContext.LoggedInUser.FullName" class="img-circle" width="40" />  @UniPortoContext.LoggedInUser.FullName  <span class="caret"></span>
+                                }
+                                else
+                                {
+                                    <img src="~/Content/user-default.png" alt="@UniPortoContext.LoggedInUser.FullName" class="img-circle" width="40" /> @UniPortoContext.LoggedInUser.FullName  <span class="caret"></span>
+
+                                }
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href='@Url.Action("Index","PrivateProfile")'>My Profile</a></li>
+                                <li><a href="javascript:document.getElementById('logoutForm').submit()">Logout</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+        @using Microsoft.AspNet.Identity
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+            {
+                @Html.AntiForgeryToken()
+
+            }
+        }
+
+
+
+        <!-- sidebar effects OUTSIDE of st-pusher: -->
+        <!-- st-effect-1, st-effect-2, st-effect-4, st-effect-5, st-effect-9, st-effect-10, st-effect-11, st-effect-12, st-effect-13 -->
+        <!-- content push wrapper -->
+        <div class="st-pusher" id="content">
+            <!-- sidebar effects INSIDE of st-pusher: -->
+            <!-- st-effect-3, st-effect-6, st-effect-7, st-effect-8, st-effect-14 -->
+            <!-- this is the wrapper for the content -->
+            <div class="st-content">
+                <!-- extra div for emulating position:fixed of the menu -->
+                <div class="st-content-inner">
+
+                    <div class="container">
+                        <div class="cover profile">
+                            <div class="wrapper">
+                                <div class="cover overlay cover-image-full height-300-lg">
+
+                                    @if (Model.UserProfile.ProfileCover != null)
+                                    {
+                                        <img id="coverPhoto" src="@Model.UserProfile.ProfileCover" style="height:100%" />
+
+                                    }
+                                    else
+                                    {
+                                        <img id="coverPhoto" src="~/Content/Cover.jpg" style="height:100%" />
+
+                                    }
+                                </div>
+                            </div>
+                            <div class="cover-info">
+                                <div class="avatar show-image">
+                                    @if (Model.UserProfile.ProfileImage != null)
+                                    {
+                                        <img src="@Model.UserProfile.ProfileImage" alt="@Model.UserProfile.FullName" />
+
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/user-default.png" alt="@Model.UserProfile.FullName" />
+
+                                    }
+                                </div>
+                                <div class="name"><a href="#">@Model.UserProfile.FullName</a></div>
+                                <ul class="cover-nav">
+                                    <li id="homeTab"><a href="@Url.Action("PortoProfile","PrivateProfile",new { ProfileId = @Model.UserProfile.Id })"><i class="fa fa-fw icon-ship-wheel"></i> Timeline</a></li>
+                                    <li id="aboutTab"><a href="@Url.Action("About","PrivateProfile")"><i class="fa fa-fw icon-user-1"></i> About</a></li>
+                                    @*<li id="friendsTab"><a href="@Url.Action("FullTimeline","PrivateProfile")"><i class="fa fa-fw fa-angellist"></i> Full TimeLine</a></li>*@
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                        <div class="container" id="ParentContainer">
+                            <div class="container">
+
+                                @Html.Action("EditProfile", "PrivateProfile")
+                                @Html.Action("AddLanguage", "PrivateProfile")
+                                @Html.Action("CreateExperiance", "PrivateProfile")
+                                @Html.Action("CreateStudyInfo", "PrivateProfile")
+
+
+                                <div class="modal fade" id="EditExperianceModal" role="dialog">
+
+                                </div>
+                                <div class="modal fade" id="EditStudyInfoModal" role="dialog">
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading panel-heading-gray">
+                                                <i class="fa fa-fw fa-info-circle"></i> About
+                                            </div>
+                                            <div class="panel-body">
+                                                <ul class="list-unstyled profile-about margin-none">
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">Date of Birth</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.DateOfBirthday</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+
+
+                                                            <div class="col-sm-4"><span class="text-muted">Major</span></div>
+
+
+                                                            <div class="col-sm-8">@Model.UserProfile.Major</div>
+
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">Gender</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.Gender</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">Email</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.Email</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">Phone Number</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.PhoneNo</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">Skills</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.Skills</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">intersts</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.intersts</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">Hobbies</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.Hobbies</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">City</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.City</div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="padding-v-5">
+                                                        <div class="row">
+                                                            <div class="col-sm-4"><span class="text-muted">Address</span></div>
+                                                            <div class="col-sm-8">@Model.UserProfile.Address</div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading panel-heading-gray">
+                                                <i class="fa fa-briefcase"></i> Experiance
+
+                                            </div>
+                                            <div class="panel-body">
+
+                                                @if (Model.UserProfile.Experiances.Count > 0)
+                                                {
+
+
+                                                    foreach (var item in Model.UserProfile.Experiances)
+                                                    {
+                                                        <div class="panel panel-success">
+                                                            <div class="panel-heading ">
+                                                                <span class="text-muted">@Html.LabelFor(p => item.Position)</span>
+                                                                <span class="text-muted">@Html.DisplayTextFor(p => item.Position)</span>
+
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <ul class="list-unstyled profile-about margin-none">
+                                                                    <li class="padding-v-5">
+                                                                        <div class="row">
+
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="padding-v-5">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.CompanyName)</span></div>
+                                                                            <div class="col-sm-8">@Html.DisplayTextFor(p => item.CompanyName)</div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="padding-v-5">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.Start)</span></div>
+                                                                            <div class="col-sm-8">@Html.DisplayTextFor(p => item.Start)</div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="padding-v-5">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.Finish)</span></div>
+                                                                            <div class="col-sm-8">@Html.DisplayTextFor(p => item.Finish)</div>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="padding-v-5">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-4"><span class="text-muted">@Html.LabelFor(p => item.Description)</span></div>
+                                                                            <div class="col-sm-8">@Html.DisplayTextFor(p => item.Description)</div>
+                                                                        </div>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <ul class="list-unstyled profile-about margin-none">
+
+                                                        <li class="padding-v-5">
+                                                            <div class="row">
+                                                                <div class="col-sm-12"><span class="text-muted">Ops .... ! No experiance available</span></div>
+
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+                                                }
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 col-lg-6 item">
+                                        @if (Model.UserProfile.ProfileStudyInfoes.Count > 0)
+            {
+                                            <div class="timeline-block">
+                                                <div class="panel panel-default profile-card clearfix-xs">
+                                                    <div class="panel-body">
+                                                        <div class="profile-card-icon">
+                                                            <i class="fa fa-graduation-cap"></i>
+                                                        </div>
+                                                        @foreach (var item in Model.UserProfile.ProfileStudyInfoes)
+                                                        {
+                                                            <h4 class="text-center">@item.Major</h4>
+                                                            <ul class="icon-list icon-list-block">
+                                                                <li><i class="fa fa-map-marker"></i> @item.School</li>
+                                                                <li><i class="fa fa-trophy"></i> @item.StudyLevel</li>
+                                                                <li><i class="fa fa-calendar"></i> @item.Start.ToShortDateString()- @item.Finish.ToShortDateString()</li>
+                                                                <li><i class="fa fa-info-circle"></i> @item.Detalis</li>
+
+                                                            </ul>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="timeline-block">
+                                                <div class="panel panel-default profile-card clearfix-xs">
+                                                    <div class="panel-body">
+                                                        <div class="profile-card-icon">
+                                                            <i class="fa  fa-exclamation-circle"></i>
+                                                        </div>
+                                                        <h4 class="text-center">There is no study info</h4>
+                                                        <button style="width:100%" class="btn btn-default" data-toggle="modal" data-target="#CreateStudyInfoModal"><i class="fa fa-plus"></i>Add New</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading panel-heading-gray">
+
+                                                <i class="fa fa-language"></i> Languages
+                                            </div>
+                                            <div class="panel-body">
+                                                @if (Model.UserProfile.Languages.Count > 0)
+                                                {
+                                                    foreach (var item in Model.UserProfile.Languages)
+                                                    {
+                                                        <ul class="list-unstyled profile-about margin-none">
+                                                            <li class="padding-v-5">
+                                                                <div class="row">
+                                                                    <div class="col-sm-10">@item.Title</div>
+                                                                </div>
+                                                            </li>
+
+                                                        </ul>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <ul class="list-unstyled profile-about margin-none">
+
+                                                        <li class="padding-v-5">
+                                                            <div class="row">
+                                                                <div class="col-sm-12"><span class="text-muted">Ops .... ! No languages</span></div>
+
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+
+                                                }
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <strong>Uni-Porto</strong> v1.0.0 &copy; Copyright @DateTime.Now.Year
+    </footer>
+    <!-- // Footer -->
+    <!-- /st-container -->
+    <!-- Inline Script for colors and config objects; used by various external scripts; -->
+    <script src="~/Content/ProfileTheme/js/vendor/all.js"></script>
+    <script src="~/Content/ProfileTheme/js/app/main.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</body>
+</html>
